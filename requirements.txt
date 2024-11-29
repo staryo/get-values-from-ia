@@ -1,0 +1,8 @@
+requests
+python-dateutil
+PyYAML
+urllib3
+websocket-client
+tqdm
+chardet
+charset-normalizer

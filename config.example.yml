@@ -1,0 +1,7 @@
+input:
+  login: login
+  password: "pass"
+  url: https://b--gemini.bfg-soft.ru
+  ws_url: wss://e--gemini.bfg-soft.ru
+  verify: False
+  time_zone: +04:00
