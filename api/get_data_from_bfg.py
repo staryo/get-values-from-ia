@@ -133,6 +133,42 @@ class GetDataFromBFG(Base):
             action='login'
         )['data']
 
+    def get_users_of_my_group(self) -> list:
+        """Получение пользователей своей группы."""
+
+        service_group_id = list(filter(
+            lambda row: row['service'],
+            self.get_from_rest_collection('group', active_progress=False)['group']
+        ))[0]['id']
+        user_id = (
+            self._perform_login()
+        )['id']
+        user_group = self.get_from_rest_collection('user_group', active_progress=False)['user_group']
+        my_groups = list(
+            map(
+                lambda row: row['group_id'],
+                filter(
+                    lambda row: row['user_id'] == user_id,
+                    user_group
+                )
+            )
+        )
+        my_users = set(
+            map(
+                lambda row: row['user_id'],
+                filter(
+                    lambda row: row['group_id'] in my_groups,
+                    user_group
+                )
+            )
+        )
+        my_users.add(user_id)
+
+        if service_group_id in my_groups:
+            return []
+        else:
+            return list(my_users)
+
     def get_from_rest_collection(self, table, *args, active_progress=True, **kwargs):
         result = {}
         self._perform_login()
